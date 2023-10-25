@@ -1,13 +1,13 @@
 import { NS } from "@ns";
 
 export async function main(ns: NS): Promise<void> {
-  const [target] = ns.args as [string];
+  const [hostname, target] = ns.args as [string, string?];
   const threads = Math.floor(
-    ns.getServerMaxRam(target) / ns.getScriptRam("hack.js")
+    ns.getServerMaxRam(hostname) / ns.getScriptRam("hack.js")
   );
 
-  ns.run("infiltrate.js", {}, target);
-  ns.scp("hack.js", target);
-  ns.killall(target);
-  ns.exec("hack.js", target, { threads }, target);
+  ns.run("infiltrate.js", {}, hostname);
+  ns.scp("hack.js", hostname);
+  ns.killall(hostname);
+  ns.exec("hack.js", hostname, { threads }, target ?? hostname);
 }
